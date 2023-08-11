@@ -65,5 +65,3 @@ abstract class MainClass
         return count;
     }
 }
-
-

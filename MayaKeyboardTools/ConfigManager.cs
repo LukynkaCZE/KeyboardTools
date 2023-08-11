@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+// ReSharper disable InconsistentNaming
 
 namespace MayaKeyboardTools
 {
@@ -46,19 +47,35 @@ namespace MayaKeyboardTools
                 throw new Exception("Config is not loaded yet! Please load the config before accessing its data!");
             }
 
-            var configData = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(ConfigFilePath))!;
-            return new ConfigData(configData);
+            var configData = JsonConvert.DeserializeObject<ConfigData>(File.ReadAllText(ConfigFilePath))!;
+            return configData;
         }
     }
     
     public class ConfigData
     {
-        [Newtonsoft.Json.JsonConstructor]
-        public ConfigData(Dictionary<string, string> keys)
+        [JsonConstructor]
+        public ConfigData(List<KeyData> keys)
         {
             this.keys = keys;
         }
-        public Dictionary<string, string> keys { get; set; }
-        
+        public List<KeyData> keys { get; set; }
+    }
+
+    public class KeyData
+    {
+        [JsonConstructor]
+        public KeyData(string key, string replacement, string type, string modKey)
+        {
+            this.key = key;
+            this.replacement = replacement;
+            this.type = type;
+            this.modKey = modKey;
+        }
+
+        public string key { get; set; }
+        public string replacement { get; set; }
+        public string type { get; set; }
+        public string modKey { get; set; }
     }
 }
