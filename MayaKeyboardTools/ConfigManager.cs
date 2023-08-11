@@ -76,6 +76,6 @@ namespace MayaKeyboardTools
         public string key { get; set; }
         public string replacement { get; set; }
         public string type { get; set; }
-        public string modKey { get; set; }
+        public string? modKey { get; set; }
     }
 }
