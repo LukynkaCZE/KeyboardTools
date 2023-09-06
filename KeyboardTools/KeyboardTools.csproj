@@ -18,6 +18,7 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="54.0.44-preview" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="NonInvasiveKeyboardHookLibrary" Version="2.2.0" />
       <PackageReference Include="NonInvasiveKeyboardHookLibrary.Core" Version="2.1.0" />
