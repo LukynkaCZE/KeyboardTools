@@ -1,3 +1,4 @@
+using KeyboardTools.CursorMovement;
 using WindowsInput.Events.Sources;
 
 namespace KeyboardTools;
@@ -36,11 +37,29 @@ public class KeyboardTools
 
         var keyDown = e.Data.KeyDown?.Key.ToString();
         var keyUp = e.Data.KeyUp?.Key.ToString();
-        
+
         if(keyDown != null && !_heldKeys.Contains(keyDown)) {_heldKeys.Add(keyDown);}
         if(keyUp != null && _heldKeys.Contains(keyUp)) {_heldKeys.Remove(keyUp);}
 
         var keysDown = _heldKeys.Aggregate("", (current, downKey) => current + downKey);
+
+        // Handling keyboard cursor movement
+        
+        if (keysDown.Contains("RControl"))
+        {
+            var cursorMoveSpeed = 10;
+            
+            //for speedy movements across the entire screen
+            if (keysDown.Contains("LShift")) cursorMoveSpeed = 30;
+            
+            if(keysDown.Contains("Up")) CursorControl.MoveCursor(Direction.Up, cursorMoveSpeed);
+            if(keysDown.Contains("Down")) CursorControl.MoveCursor(Direction.Down, cursorMoveSpeed);
+            if(keysDown.Contains("Right")) CursorControl.MoveCursor(Direction.Right, cursorMoveSpeed);
+            if(keysDown.Contains("Left")) CursorControl.MoveCursor(Direction.Left, cursorMoveSpeed);
+            if(keysDown.Contains("Enter")) {CursorHook.DoMouseClick();}
+
+            e.Next_Hook_Enabled = false;
+        }
         
         foreach (var keyData in keymap.Where(keyData => keysDown.Contains(keyData.key)))
         {

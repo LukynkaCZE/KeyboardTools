@@ -1,3 +1,4 @@
+using System.Windows.Media;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -9,7 +10,7 @@ public class ConfigManager
     public static readonly string ConfigDirectoryPath = $"{HomePath}\\KeyboardTools";
     private static readonly string ConfigFilePath = $"{ConfigDirectoryPath}\\config.json";
     private bool configLoaded;
-
+    
     public void Load()
     {
         var keyDataList = new List<KeyData> { new("A", "hello world!", "REPLACE", "LShift"), new("E", "msg %username% Hi there!", "COMMAND", "LShift")};
