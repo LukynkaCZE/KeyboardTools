@@ -1,8 +1,9 @@
 using KeyboardTools.CursorMovement;
+using KeyboardTools.WindowManager;
 using WindowsInput.Events.Sources;
 
-namespace KeyboardTools;
 
+namespace KeyboardTools;
 public class KeyboardTools
 {
     public static readonly CustomKeyMap CustomKeyMap = new();
@@ -52,6 +53,8 @@ public class KeyboardTools
             //for speedy movements across the entire screen
             if (keysDown.Contains("LShift")) cursorMoveSpeed = 30;
             
+            //TODO Interpolation
+            
             if(keysDown.Contains("Up")) CursorControl.MoveCursor(Direction.Up, cursorMoveSpeed);
             if(keysDown.Contains("Down")) CursorControl.MoveCursor(Direction.Down, cursorMoveSpeed);
             if(keysDown.Contains("Right")) CursorControl.MoveCursor(Direction.Right, cursorMoveSpeed);
@@ -66,18 +69,24 @@ public class KeyboardTools
             var replacementText = "";
             var modKey = "";
             if (keyData.modKey != null) modKey = keyData.modKey;
+            
+            Logger.Log($"Running {keyData.key} (mod: {keyData.modKey}, repl: {keyData.replacement}, type: {keyData.type})", Logger.Type.Info);
+            
             if (keyData.modKey != "" && keysDown.Contains(modKey) && keysDown.Contains(keyData.key))
             {
                 replacementText = keyData.replacement;
                 e.Next_Hook_Enabled = false;
+                Logger.Log($"Running keybind {keyData.key} with req mod key {keyData.modKey}", Logger.Type.Info);
 
             }
+
             else if(keysDown == keyData.key && keyData.modKey == "")
             {
                 replacementText = keyData.replacement;
                 e.Next_Hook_Enabled = false;
-
             }
+            
+            else return;
 
             switch (keyData.type)
             {
@@ -88,10 +97,14 @@ public class KeyboardTools
                     if(replacementText == "") break; // what an amazing fix
                     Utils.ExecuteCommand(replacementText);
                     break;
+                case "RESIZE_WINDOW":
+                    //TODO: Window Size Profiles
+                    WindowSizeManager.Resize();
+                    break;
             }
         }
     }
-
+         
     private async void SimulateKeyboard(string text)
     {
         var simulatedKeyboardEvent = WindowsInput.Simulate.Events();
@@ -104,3 +117,4 @@ public class KeyboardTools
         }
     }
 }
+
